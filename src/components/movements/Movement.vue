@@ -1,16 +1,23 @@
 <template>
   <div class="movement">
-    <h3 class="title">{{ title }}</h3>
-    <p class="description">{{ description }}</p>
-    <div :class="`amount ${statusAmount}`">{{ amountCurrency }}</div>
-    <div class="delete">
-      <img src="@/assets/trash-icon.svg" :alt="`id-${id}`" />
+    <div class="content">
+      <h4 class="title">{{ title }}</h4>
+      <p class="description">{{ description }}</p>
+    </div>
+    <div class="actions">
+      <img
+        class="delete"
+        src="@/assets/trash-icon.svg"
+        :alt="`id-${id}`"
+        @click="remove"
+      />
+      <p :class="`amount ${statusAmount}`">{{ amountCurrency }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { toRefs, defineProps, computed } from "vue";
+import { toRefs, defineProps, defineEmits, computed } from "vue";
 
 const props = defineProps({
   id: { type: Number },
@@ -32,6 +39,11 @@ const currencyFormatter = new Intl.NumberFormat("es-MX", {
 const amountCurrency = computed(() => {
   return currencyFormatter.format(amount.value);
 });
+
+const emit = defineEmits(["remove"]);
+const remove = () => {
+  emit("remove", id.value);
+};
 </script>
 
 <style scoped>
@@ -39,27 +51,27 @@ const amountCurrency = computed(() => {
   background: #e6f9ff;
   border-radius: 15px;
   padding: 15px;
-  display: grid;
-  grid-template-areas:
-    "title title delete"
-    "description description ."
-    "description description amount";
+  display: flex;
+  justify-content: space-between;
 }
 .title {
   margin: 0;
-  grid-area: title;
 }
 .description {
   margin: 0;
-  grid-area: description;
+}
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 .amount {
-  grid-area: amount;
   font-weight: 600;
 }
 .delete {
-  grid-area: delete;
-  text-align: end;
+  width: 25px;
+  height: 25px;
 }
 .amount.loss {
   color: red;

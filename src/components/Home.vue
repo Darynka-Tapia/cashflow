@@ -11,7 +11,7 @@
         :total-amount="1000000"
       >
         <template #graphic>Graphic</template>
-        <template #action>action</template>
+        <template #action><Action /></template>
       </Resume>
     </template>
     <template #movements>
@@ -25,6 +25,7 @@ import Layout from "./Layout.vue";
 import Header from "./Header.vue";
 import Resume from "./resume/Index.vue";
 import Movements from "./movements/Index.vue";
+import Action from "./Actions.vue";
 
 export default {
   components: {
@@ -32,6 +33,7 @@ export default {
     Header,
     Resume,
     Movements,
+    Action,
   },
   data() {
     return {
@@ -57,6 +59,69 @@ export default {
           description: `Salida al cine por mi cumple 
             Lorem Ipsum is simply `,
           amount: -800,
+        },
+        {
+          id: 4,
+          title: "Movimiento 4",
+          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
+            of the printing `,
+          amount: 100,
+        },
+        {
+          id: 4,
+          title: "Movimiento 4",
+          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
+            of the printing `,
+          amount: 100,
+        },
+        {
+          id: 4,
+          title: "Movimiento 4",
+          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
+            of the printing `,
+          amount: 100,
+        },
+        {
+          id: 4,
+          title: "Movimiento 4",
+          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
+            of the printing `,
+          amount: 100,
+        },
+        {
+          id: 4,
+          title: "Movimiento 4",
+          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
+            of the printing `,
+          amount: 100,
+        },
+        {
+          id: 4,
+          title: "Movimiento 4",
+          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
+            of the printing `,
+          amount: 100,
+        },
+        {
+          id: 4,
+          title: "Movimiento 4",
+          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
+            of the printing `,
+          amount: 100,
+        },
+        {
+          id: 4,
+          title: "Movimiento 4",
+          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
+            of the printing `,
+          amount: 100,
+        },
+        {
+          id: 4,
+          title: "Movimiento 4",
+          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
+            of the printing `,
+          amount: 100,
         },
         {
           id: 4,

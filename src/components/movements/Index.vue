@@ -8,6 +8,7 @@
         :title="title"
         :description="description"
         :amount="amount"
+        @remove="remove"
       />
     </div>
   </div>
@@ -25,6 +26,10 @@ const props = defineProps({
 });
 
 const { movements } = toRefs(props);
+
+const remove = (id) => {
+  console.log("console desde el emit", id);
+};
 </script>
 
 <style scoped>
@@ -44,6 +49,6 @@ const { movements } = toRefs(props);
   display: flex;
   flex-direction: column;
   gap: 8px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 </style>
