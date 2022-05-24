@@ -2,20 +2,20 @@
   <div class="movements">
     <div class="content">
       <Movement
-        v-for="{ id, title, description, amount } in movements"
+        v-for="({ id, title, description, amount }, index) in movements"
         :key="id"
         :id="id"
         :title="title"
         :description="description"
         :amount="amount"
-        @remove="remove"
+        @click="remove(index)"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import { toRefs, defineProps } from "vue";
+import { toRefs, defineProps, defineEmits } from "vue";
 import Movement from "./Movement";
 
 const props = defineProps({
@@ -26,9 +26,10 @@ const props = defineProps({
 });
 
 const { movements } = toRefs(props);
+const emit = defineEmits(["remove"]);
 
 const remove = (id) => {
-  console.log("console desde el emit", id);
+  emit("remove", id);
 };
 </script>
 

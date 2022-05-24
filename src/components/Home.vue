@@ -8,14 +8,14 @@
         :label="label"
         date-label="2020-10-05"
         :amount="amount"
-        :total-amount="1000000"
+        :total-amount="totalAmount"
       >
         <template #graphic><Graphic :amounts="amounts" /></template>
-        <template #action><Action /></template>
+        <template #action><Action @create="create" /></template>
       </Resume>
     </template>
     <template #movements>
-      <Movements :movements="movements"></Movements>
+      <Movements :movements="movements" @remove="remove"></Movements>
     </template>
   </Layout>
 </template>
@@ -39,102 +39,55 @@ export default {
   },
   data() {
     return {
-      label: null, // "Ahorro Total",
+      label: "Ahorro Total", // "",
       amount: null, // 10000,
-      amounts: [100, 200, 500, 200, -400, -600, -300, 0, 300, 500],
-      movements: [
-        {
-          id: 1,
-          title: "Movimiento 1",
-          description: `Recibi nomina Lorem Ipsum is simply dummy `,
-          amount: 9000,
-        },
-        {
-          id: 2,
-          title: "Movimiento 2",
-          description: `Compre en el super Lorem Ipsum is simply
-            dummy text `,
-          amount: -200,
-        },
-        {
-          id: 3,
-          title: "Movimiento 3",
-          description: `Salida al cine por mi cumple 
-            Lorem Ipsum is simply `,
-          amount: -800,
-        },
-        {
-          id: 4,
-          title: "Movimiento 4",
-          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
-            of the printing `,
-          amount: 100,
-        },
-        {
-          id: 4,
-          title: "Movimiento 4",
-          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
-            of the printing `,
-          amount: 100,
-        },
-        {
-          id: 4,
-          title: "Movimiento 4",
-          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
-            of the printing `,
-          amount: 100,
-        },
-        {
-          id: 4,
-          title: "Movimiento 4",
-          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
-            of the printing `,
-          amount: 100,
-        },
-        {
-          id: 4,
-          title: "Movimiento 4",
-          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
-            of the printing `,
-          amount: 100,
-        },
-        {
-          id: 4,
-          title: "Movimiento 4",
-          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
-            of the printing `,
-          amount: 100,
-        },
-        {
-          id: 4,
-          title: "Movimiento 4",
-          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
-            of the printing `,
-          amount: 100,
-        },
-        {
-          id: 4,
-          title: "Movimiento 4",
-          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
-            of the printing `,
-          amount: 100,
-        },
-        {
-          id: 4,
-          title: "Movimiento 4",
-          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
-            of the printing `,
-          amount: 100,
-        },
-        {
-          id: 4,
-          title: "Movimiento 4",
-          description: `La descripcion del gasto Lorem Ipsum is simply dummy text
-            of the printing `,
-          amount: 100,
-        },
-      ],
+      movements: [],
     };
+  },
+  mounted() {
+    const movements = JSON.parse(localStorage.getItem("movements"));
+    if (Array.isArray(movements)) {
+      this.movements = movements.map((m) => {
+        return { ...m, time: new Date(m.time) };
+      });
+    }
+  },
+  methods: {
+    create(data) {
+      this.movements.push(data);
+      this.save();
+    },
+    remove(id) {
+      this.movements.splice(id, 1);
+      this.save();
+    },
+    save() {
+      localStorage.setItem("movements", JSON.stringify(this.movements));
+    },
+  },
+  computed: {
+    amounts() {
+      const lastDays = this.movements
+        .filter((m) => {
+          const today = new Date();
+          const oldDate = today.setDate(today.getDate() - 30);
+          return m.time > oldDate;
+        })
+        .map((m) => m.amount);
+
+      return lastDays.map((m, i) => {
+        const lastMovements = lastDays.slice(0, i + 1);
+        return lastMovements.reduce((suma, movement) => {
+          return suma + movement;
+        }, 0);
+      });
+    },
+    totalAmount() {
+      const result = this.movements.reduce((suma, m) => {
+        return suma + m.amount;
+      }, 0);
+      return result;
+    },
   },
 };
 </script>

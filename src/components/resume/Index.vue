@@ -50,6 +50,7 @@ main {
   align-content: center;
   flex-direction: column;
   width: 100%;
+  margin-top: 30px;
 }
 h1,
 p {
@@ -57,7 +58,6 @@ p {
   text-align: center;
 }
 h1 {
-  margin-top: 14px;
   color: var(--brand-green);
 }
 .graphic,

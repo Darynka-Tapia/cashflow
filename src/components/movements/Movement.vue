@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import { toRefs, defineProps, defineEmits, computed } from "vue";
+import { toRefs, defineProps, computed } from "vue";
 
 const props = defineProps({
   id: { type: Number },
@@ -40,9 +40,8 @@ const amountCurrency = computed(() => {
   return currencyFormatter.format(amount.value);
 });
 
-const emit = defineEmits(["remove"]);
 const remove = () => {
-  emit("remove", id.value);
+  console.log("remove movement");
 };
 </script>
 

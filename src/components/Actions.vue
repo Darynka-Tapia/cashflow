@@ -9,7 +9,7 @@
         </div>
         <div class="field">
           <label>Monto</label>
-          <input type="number" v-model="amount" />
+          <input type="number" v-model="amount" placeholder="0" />
         </div>
         <div class="field">
           <label>Descripción</label>
@@ -35,17 +35,33 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, defineEmits } from "vue";
 import Modal from "@/components/Modal.vue";
 
 const showModal = ref(false);
 const title = ref("");
-const amount = ref(0);
+const amount = ref(null);
 const description = ref("");
 const movementType = ref("Ingreso");
 
+const emit = defineEmits(["create"]);
+
 const submit = () => {
   showModal.value = false;
+  emit("create", {
+    title: title.value,
+    description: description.value,
+    amount: movementType.value === "Ingreso" ? amount.value : -amount.value,
+    time: new Date(),
+    id: new Date().getTime(),
+  });
+  clean();
+};
+const clean = () => {
+  amount.value = null;
+  title.value = "";
+  description.value = "";
+  movementType.value = "Ingreso";
 };
 </script>
 
