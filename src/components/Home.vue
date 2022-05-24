@@ -10,7 +10,9 @@
         :amount="amount"
         :total-amount="totalAmount"
       >
-        <template #graphic><Graphic :amounts="amounts" /></template>
+        <template #graphic>
+          <Graphic :amounts="amounts" @select="select" @unselect="unselect" />
+        </template>
         <template #action><Action @create="create" /></template>
       </Resume>
     </template>
@@ -42,6 +44,7 @@ export default {
       label: "Ahorro Total", // "",
       amount: null, // 10000,
       movements: [],
+      isUnselect: false,
     };
   },
   mounted() {
@@ -63,6 +66,12 @@ export default {
     },
     save() {
       localStorage.setItem("movements", JSON.stringify(this.movements));
+    },
+    select(amount) {
+      this.amount = amount;
+    },
+    unselect() {
+      this.amount = null;
     },
   },
   computed: {

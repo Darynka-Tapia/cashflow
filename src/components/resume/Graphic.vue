@@ -10,9 +10,9 @@
         stroke="#c4c4c4"
         stroke-width="2"
         x1="0"
-        y1="100"
+        :y1="zero"
         x2="300"
-        y2="100"
+        :y2="zero"
       />
       <polyline
         fill="none"
@@ -35,7 +35,8 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs, computed, ref } from "vue";
+import { defineProps, defineEmits, toRefs, computed, ref, watch } from "vue";
+
 const props = defineProps({
   amounts: {
     type: Array,
@@ -48,11 +49,14 @@ const { amounts } = toRefs(props);
 const amountToPixels = (amount) => {
   const min = Math.min(...amounts.value);
   const max = Math.max(...amounts.value);
-
   const amountAbs = amount + Math.abs(min);
   const minmax = Math.abs(max) + Math.abs(min);
   return 200 - ((amountAbs * 100) / minmax) * 2;
 };
+
+const zero = computed(() => {
+  return amountToPixels(0);
+});
 
 const points = computed(() => {
   const total = amounts.value.length;
@@ -66,6 +70,16 @@ const points = computed(() => {
 const showPointer = ref(false);
 const pointer = ref(0);
 
+const emit = defineEmits(["select", "unselect"]);
+
+watch(pointer, (value) => {
+  const index = Math.ceil(value / (300 / amounts.value.length));
+  if (index < 0 || index > amounts.value.length) {
+    return;
+  }
+  emit("select", amounts.value[index - 1]);
+});
+
 const tap = ({ target, touches }) => {
   showPointer.value = true;
   const elementWidth = target.getBoundingClientRect().width;
@@ -75,6 +89,7 @@ const tap = ({ target, touches }) => {
 };
 const untap = () => {
   showPointer.value = false;
+  emit("unselect");
 };
 </script>
 
